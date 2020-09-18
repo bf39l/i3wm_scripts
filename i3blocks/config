@@ -1,0 +1,45 @@
+markup=pango
+
+[num-lock]
+# command=xset -q | grep "Num Lock" | awk '{ print " " $8 }'
+command=xset -q | grep "Num Lock" | awk '{print " " $8; print $8; if($8 ~ /on/) { print "#00ff00" } else { print "#ffffff" } }'
+interval=once
+signal=10
+min_width=50
+align=left
+
+[caps-lock]
+# command=xset -q | grep Caps | awk '{ print " " $4 }'
+command=xset -q | grep Caps | awk '{print " " $4; print $4; if($4 ~ /on/) { print "#00ff00" } else { print "#ffffff" } }'
+interval=once
+signal=10
+min_width=50
+align=left
+
+[brightness]
+command=$HOME/.config/i3_scripts/brightness
+interval=1
+min_width=85
+align=center
+
+#[wifi]
+#command=$HOME/.config/i3_scripts/wifi_i3blocks; [ -z "${BLOCK_BUTTON}" ] || nm-connection-editor &
+#label=
+## INTERFACE=wlo1
+#interval=10
+
+[volume]
+command=$HOME/.config/i3_scripts/volume
+interval=once
+min_width=85
+signal=10
+align=center
+
+[battery]
+command=$HOME/.config/i3_scripts/battery
+interval=3
+
+[calendar]
+command=$HOME/.config/i3_scripts/calendar
+interval=1
+label=  

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# to make $ brnghtnessctl working without sudo, you can add yourself into group "video"
+format() {
+    FILE=/sys/class/backlight/intel_backlight/brightness
+    VAR=`head -n 1 $FILE`
+    BRIGHTNESS=$((VAR/1200))
+    # notify-send "${BRIGHTNESS}"
+
+    if [ "${BRIGHTNESS}" -le 25 ]; then
+        ICON=""
+    elif [ "${BRIGHTNESS}" -le 50 ]; then
+        ICON=""
+    elif [ "${BRIGHTNESS}" -le 80 ]; then
+        ICON=""
+    elif [ "${BRIGHTNESS}" -eq 100 ]; then
+        ICON=""
+    else
+        ICON=""
+    fi
+    echo "<span font='Material Design Icons' color='#ffffff'> ${ICON} ${BRIGHTNESS}% </span>"
+}
+#-------------------- mouse events
+case $BLOCK_BUTTON in
+  4) brightnessctl set 5%+ > /dev/null 2>&1 ;; # scroll up, increase
+  5) brightnessctl set 5%- > /dev/null 2>&1 ;; # scroll down, decrease
+esac
+
+format
+
+# notify-send -i xfpm-brightness-lcd "$((HELLIGKEIT))%" -t 2000
+# notify-send " " -i xfpm-brightness-lcd -h int:value:$HELLIGKEIT -h string:synchronous:brightness -t 10 -c "brightness"

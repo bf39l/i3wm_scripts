@@ -1,0 +1,53 @@
+#!/bin/sh
+
+battery_info() {
+	BATTERY=$(upower -e | grep 'BAT' | grep -o '.$')
+	BATTERY_INFO=$(acpi --battery | grep "Battery ${BATTERY}")
+	BATTERY_STATE=$(echo "${BATTERY_INFO}" | grep -wo "Full\|Charging\|Discharging")
+	BATTERY_POWER=$(echo "${BATTERY_INFO}" | grep -o '[0-9]\+%' | tr -d '%')
+	BATTERY_ICON=0
+	BATTERY_COLOR="#ffffff"
+
+	URGENT_VALUE=10
+
+	if [ "${BATTERY_POWER}" -le "${URGENT_VALUE}" ]; then
+		BATTERY_ICON=""
+		BATTERY_COLOR="#ff0000"
+	elif [ "${BATTERY_POWER}" -le 25 ]; then
+    BATTERY_ICON=""
+ 		BATTERY_COLOR="#fc5353"
+	elif [ "${BATTERY_POWER}" -le 50 ]; then
+    BATTERY_ICON=""
+    BATTERY_COLOR="#ffbb84"
+	elif [ "${BATTERY_POWER}" -le 80 ]; then
+    BATTERY_ICON=""
+    BATTERY_COLOR="#ffbb84"
+  	elif [ "${BATTERY_POWER}" -eq 100 ]; then
+    BATTERY_ICON=""
+    BATTERY_COLOR="#52f984"
+	else
+    BATTERY_ICON=""
+    BATTERY_COLOR="#ffffff"
+	fi
+
+	if [ "${BATTERY_STATE}" = "Charging" ]; then
+	  battery="<span color='${BATTERY_COLOR}'> ${BATTERY_ICON} ${BATTERY_POWER}%↑ </span>"
+	elif [ "${BATTERY_STATE}" = "Discharging" ]; then
+    battery="<span color='${BATTERY_COLOR}'> ${BATTERY_ICON} ${BATTERY_POWER}%↓ </span>"
+	else
+    battery="<span color='${BATTERY_COLOR}'> ${BATTERY_ICON} ${BATTERY_POWER}% </span>"
+	fi
+
+	if [ "${BATTERY_POWER}" -le "${URGENT_VALUE}" ]; then
+  	exit 33
+	fi
+}
+battery_info
+echo $battery
+echo $battery
+echo $BATTERY_COLOR
+
+case "$BLOCK_BUTTON" in
+  1|2|3) 
+	xfce4-power-manager-settings > /dev/null 2>&1 &
+esac
