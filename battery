@@ -1,7 +1,7 @@
 #!/bin/sh
 
 battery_info() {
-	BATTERY=$(upower -e | grep 'BAT' | grep -o '.$')
+	BATTERY=0
 	BATTERY_INFO=$(acpi --battery | grep "Battery ${BATTERY}")
 	BATTERY_STATE=$(echo "${BATTERY_INFO}" | grep -wo "Full\|Charging\|Discharging")
 	BATTERY_POWER=$(echo "${BATTERY_INFO}" | grep -o '[0-9]\+%' | tr -d '%')
@@ -27,7 +27,7 @@ battery_info() {
     BATTERY_COLOR="#52f984"
 	else
     BATTERY_ICON=""
-    BATTERY_COLOR="#ffffff"
+    BATTERY_COLOR="#ffbb84"
 	fi
 
 	if [ "${BATTERY_STATE}" = "Charging" ]; then
